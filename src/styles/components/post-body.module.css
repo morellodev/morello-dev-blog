@@ -21,7 +21,7 @@
   @apply mt-8 mb-4 text-2xl leading-snug;
 }
 
-.markdown a {
+.markdown p a {
   @apply font-semibold text-red-700;
 }
 
