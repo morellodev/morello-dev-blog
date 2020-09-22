@@ -1,0 +1,34 @@
+.markdown {
+  @apply text-lg leading-relaxed;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  @apply my-6;
+}
+
+.markdown :matches(h1, h2, h3, h4, h5, h6) {
+  @apply font-semibold;
+}
+
+.markdown h2 {
+  @apply mt-12 mb-4 text-3xl leading-snug;
+}
+
+.markdown h3 {
+  @apply mt-8 mb-4 text-2xl leading-snug;
+}
+
+.markdown a {
+  @apply font-semibold text-red-700;
+}
+
+.markdown a:hover {
+  @apply underline;
+}
+
+.markdown ul {
+  @apply list-inside list-square;
+}
