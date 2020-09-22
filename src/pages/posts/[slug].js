@@ -20,18 +20,6 @@ export default function Post({ post, morePosts }) {
 
   return (
     <Layout>
-      <Head>
-        <title>{post.title} | Dennis Morello</title>
-        {post.meta
-          .filter((meta) => meta.tag === "meta")
-          .map((meta) => {
-            const { property, content } = meta.attributes ?? {};
-
-            return property ? (
-              <meta key={property} name={property} content={content} />
-            ) : null;
-          })}
-      </Head>
       <Container>
         <Header />
         {router.isFallback ? (
@@ -39,6 +27,15 @@ export default function Post({ post, morePosts }) {
         ) : (
           <>
             <article>
+              <Head>
+                <title>{post.title} | Dennis Morello</title>
+                {post.meta
+                  .filter((meta) => meta.tag === "meta")
+                  .map((meta, index) => (
+                    <meta key={index} {...meta.attributes} />
+                  ))}
+              </Head>
+
               <PostHeader
                 title={post.title}
                 coverImage={post.coverImage}
