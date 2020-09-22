@@ -97,9 +97,6 @@ export async function getPostAndMorePosts(slug) {
           slug
           content
           publicationDate
-          ogImage: coverImage{
-            url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000})
-          }
           coverImage {
             responsiveImage(imgixParams: {fit: crop, w: 2000, h: 1000}) {
               ...responsiveImageFragment
@@ -110,6 +107,11 @@ export async function getPostAndMorePosts(slug) {
             avatar {
               url(imgixParams: {fit: crop, w: 100, h: 100})
             }
+          }
+          meta: _seoMetaTags {
+            attributes
+            content
+            tag
           }
         }
         morePosts: allPosts(orderBy: publicationDate_DESC, first: 2, filter: {slug: {neq: $slug}}) {
