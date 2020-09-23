@@ -72,7 +72,7 @@ export async function getAllPostsForHomePage() {
           author {
             name
             avatar {
-              url(imgixParams: {fit: crop, w: 100, h: 100})
+              url(imgixParams: {fit: facearea, w: 100, h: 100})
             }
           }
         }
@@ -105,7 +105,7 @@ export async function getPostAndMorePosts(slug) {
           author {
             name
             avatar {
-              url(imgixParams: {fit: crop, w: 100, h: 100})
+              url(imgixParams: {fit: facearea, w: 100, h: 100})
             }
           }
           meta: _seoMetaTags {
@@ -127,12 +127,39 @@ export async function getPostAndMorePosts(slug) {
           author {
             name
             avatar {
-              url(imgixParams: {fit: crop, w: 100, h: 100})
+              url(imgixParams: {fit: facearea, w: 100, h: 100})
             }
           }
         }
       }
       ${responsiveImageFragment}
+    `,
+      {
+        variables: {
+          slug,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getAuthor(slug) {
+  try {
+    const data = await fetchDatoCms(
+      `
+      query AuthorBySlug($slug: String) {
+        author(filter: {slug: {eq: $slug}}) {
+          name
+          avatar {
+            url(imgixParams: {fit: facearea, w: 200, h: 200})
+          }
+          bio
+        }
+      }
     `,
       {
         variables: {

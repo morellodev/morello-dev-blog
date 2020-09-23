@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 // Components
-import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import Date from "./date";
 
@@ -10,7 +9,6 @@ export default function PostPreview({
   coverImage,
   date,
   excerpt,
-  author,
   slug,
 }) {
   return (
@@ -30,8 +28,7 @@ export default function PostPreview({
       <div className="mb-4 text-lg">
         <Date dateString={date} />
       </div>
-      <p className="mb-4 text-lg leading-relaxed">{excerpt}</p>
-      <Avatar name={author.name} picture={author.avatar} />
+      <p className="text-lg leading-relaxed">{excerpt}</p>
     </div>
   );
 }

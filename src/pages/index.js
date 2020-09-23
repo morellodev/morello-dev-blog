@@ -2,15 +2,15 @@ import Head from "next/head";
 
 // Components
 import Container from "@/components/container";
+import Header from "@/components/header";
 import HeroPost from "@/components/hero-post";
-import Intro from "@/components/intro";
 import Layout from "@/components/layout";
 import MoreStories from "@/components/more-stories";
 
 // Lib
-import { getAllPostsForHomePage } from "@/lib/datocms";
+import { getAllPostsForHomePage, getAuthor } from "@/lib/datocms";
 
-export default function Home({ allPosts }) {
+export default function Home({ allPosts, author }) {
   const [heroPost, ...morePosts] = allPosts;
 
   return (
@@ -20,14 +20,13 @@ export default function Home({ allPosts }) {
           <title>Dennis Morello</title>
         </Head>
         <Container>
-          <Intro />
+          <Header author={author.author} />
 
           {heroPost && (
             <HeroPost
               title={heroPost.title}
               coverImage={heroPost.coverImage}
               date={heroPost.publicationDate}
-              author={heroPost.author}
               slug={heroPost.slug}
               excerpt={heroPost.excerpt}
             />
@@ -41,11 +40,15 @@ export default function Home({ allPosts }) {
 }
 
 export async function getStaticProps() {
-  const allPosts = await getAllPostsForHomePage();
+  const [allPosts, author] = await Promise.all([
+    getAllPostsForHomePage(),
+    getAuthor("dennis-morello"),
+  ]);
 
   return {
     props: {
       allPosts,
+      author,
     },
   };
 }
