@@ -1,8 +1,10 @@
+import { GraphQLClient, gql } from "graphql-request";
+
 const { DATOCMS_API_TOKEN, DATOCMS_GRAPHQL_ENDPOINT } = process.env;
 
-const responsiveImageFragment = `
+const responsiveImageFragment = gql`
   fragment responsiveImageFragment on ResponsiveImage {
-  srcSet
+    srcSet
     webpSrcSet
     sizes
     src
@@ -16,160 +18,122 @@ const responsiveImageFragment = `
   }
 `;
 
-async function fetchDatoCms(query, { variables } = {}) {
-  const response = await fetch(DATOCMS_GRAPHQL_ENDPOINT, {
-    method: "POST",
+async function request(query, variables) {
+  const client = new GraphQLClient(DATOCMS_GRAPHQL_ENDPOINT, {
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${DATOCMS_API_TOKEN}`,
     },
-    body: JSON.stringify({ query, variables }),
   });
 
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  const jsonResponse = await response.json();
-
-  if (jsonResponse.errors) {
-    throw new Error(jsonResponse.errors[0].message);
-  }
-
-  return jsonResponse.data;
+  return client.request(query, variables);
 }
 
 export async function getAllPostsWithSlug() {
-  try {
-    const data = await fetchDatoCms(`
-      {
-        allPosts {
-          slug
-        }
+  const query = gql`
+    {
+      allPosts {
+        slug
       }
-    `);
+    }
+  `;
 
-    return data.allPosts;
-  } catch (error) {
-    throw error;
-  }
+  return request(query);
 }
 
 export async function getAllPostsForHomePage() {
-  try {
-    const data = await fetchDatoCms(`
-      {
-        allPosts(orderBy: publicationDate_DESC, first: 20) {
-          title
-          slug
-          excerpt
-          publicationDate
-          coverImage {
-            responsiveImage(imgixParams: {fit: crop, w: 2000, h: 1000}) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-            avatar {
-              url(imgixParams: {fit: facearea, w: 100, h: 100})
-            }
+  const query = gql`
+    {
+      allPosts(orderBy: publicationDate_DESC, first: 20) {
+        title
+        slug
+        excerpt
+        publicationDate
+        coverImage {
+          responsiveImage(imgixParams: { fit: crop, w: 2000, h: 1000 }) {
+            ...responsiveImageFragment
           }
         }
-      }
-
-      ${responsiveImageFragment}
-    `);
-
-    return data.allPosts;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function getPostAndMorePosts(slug) {
-  try {
-    const data = await fetchDatoCms(
-      `
-      query PostBySlug($slug: String) {
-        post(filter: {slug: {eq: $slug}}) {
-          title
-          slug
-          content
-          publicationDate
-          coverImage {
-            responsiveImage(imgixParams: {fit: crop, w: 2000, h: 1000}) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-            avatar {
-              url(imgixParams: {fit: facearea, w: 100, h: 100})
-            }
-          }
-          meta: _seoMetaTags {
-            attributes
-            content
-            tag
-          }
-        }
-        morePosts: allPosts(orderBy: publicationDate_DESC, first: 2, filter: {slug: {neq: $slug}}) {
-          title
-          slug
-          excerpt
-          publicationDate
-          coverImage {
-            responsiveImage(imgixParams: {fit: crop, w: 2000, h: 1000 }) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-            avatar {
-              url(imgixParams: {fit: facearea, w: 100, h: 100})
-            }
-          }
-        }
-      }
-      ${responsiveImageFragment}
-    `,
-      {
-        variables: {
-          slug,
-        },
-      }
-    );
-
-    return data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function getAuthor(slug) {
-  try {
-    const data = await fetchDatoCms(
-      `
-      query AuthorBySlug($slug: String) {
-        author(filter: {slug: {eq: $slug}}) {
+        author {
           name
           avatar {
-            url(imgixParams: {fit: facearea, w: 200, h: 200})
+            url(imgixParams: { fit: facearea, w: 100, h: 100 })
           }
-          bio
         }
       }
-    `,
-      {
-        variables: {
-          slug,
-        },
-      }
-    );
+    }
 
-    return data;
-  } catch (error) {
-    throw error;
-  }
+    ${responsiveImageFragment}
+  `;
+
+  return request(query);
+}
+
+export async function getPostBySlugAndMorePosts(slug) {
+  const query = gql`
+    query PostBySlug($slug: String) {
+      post(filter: { slug: { eq: $slug } }) {
+        title
+        slug
+        content
+        publicationDate
+        coverImage {
+          responsiveImage(imgixParams: { fit: crop, w: 2000, h: 1000 }) {
+            ...responsiveImageFragment
+          }
+        }
+        author {
+          name
+          avatar {
+            url(imgixParams: { fit: facearea, w: 100, h: 100 })
+          }
+        }
+        meta: _seoMetaTags {
+          attributes
+          content
+          tag
+        }
+      }
+      morePosts: allPosts(
+        orderBy: publicationDate_DESC
+        first: 2
+        filter: { slug: { neq: $slug } }
+      ) {
+        title
+        slug
+        excerpt
+        publicationDate
+        coverImage {
+          responsiveImage(imgixParams: { fit: crop, w: 2000, h: 1000 }) {
+            ...responsiveImageFragment
+          }
+        }
+        author {
+          name
+          avatar {
+            url(imgixParams: { fit: facearea, w: 100, h: 100 })
+          }
+        }
+      }
+    }
+
+    ${responsiveImageFragment}
+  `;
+
+  return request(query, { slug });
+}
+
+export async function getAuthorBySlug(slug) {
+  const query = gql`
+    query AuthorBySlug($slug: String) {
+      author(filter: { slug: { eq: $slug } }) {
+        name
+        avatar {
+          url(imgixParams: { fit: facearea, w: 200, h: 200 })
+        }
+        bio
+      }
+    }
+  `;
+
+  return request(query, { slug });
 }

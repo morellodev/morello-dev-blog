@@ -8,7 +8,7 @@ import Layout from "@/components/layout";
 import MoreStories from "@/components/more-stories";
 
 // Lib
-import { getAllPostsForHomePage, getAuthor } from "@/lib/datocms";
+import { getAllPostsForHomePage, getAuthorBySlug } from "@/lib/datocms";
 
 export default function Home({ allPosts, author }) {
   const [heroPost, ...morePosts] = allPosts;
@@ -40,9 +40,9 @@ export default function Home({ allPosts, author }) {
 }
 
 export async function getStaticProps() {
-  const [allPosts, author] = await Promise.all([
+  const [{ allPosts }, author] = await Promise.all([
     getAllPostsForHomePage(),
-    getAuthor("dennis-morello"),
+    getAuthorBySlug("dennis-morello"),
   ]);
 
   return {

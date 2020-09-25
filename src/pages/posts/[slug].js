@@ -12,7 +12,7 @@ import PostTitle from "@/components/post-title";
 import SectionSeparator from "@/components/section-separator";
 
 // Lib
-import { getAllPostsWithSlug, getPostAndMorePosts } from "@/lib/datocms";
+import { getAllPostsWithSlug, getPostBySlugAndMorePosts } from "@/lib/datocms";
 import markdownToHtml from "@/lib/md-to-html";
 
 export default function Post({ post, morePosts }) {
@@ -54,16 +54,16 @@ export default function Post({ post, morePosts }) {
 }
 
 export async function getStaticPaths() {
-  const allPostsWithSlug = await getAllPostsWithSlug();
+  const { allPosts } = await getAllPostsWithSlug();
 
   return {
-    paths: allPostsWithSlug.map((post) => `/posts/${post.slug}`),
+    paths: allPosts.map((post) => `/posts/${post.slug}`),
     fallback: true,
   };
 }
 
 export async function getStaticProps({ params }) {
-  const data = await getPostAndMorePosts(params.slug);
+  const data = await getPostBySlugAndMorePosts(params.slug);
   const content = await markdownToHtml(data?.post?.content || "");
 
   return {
