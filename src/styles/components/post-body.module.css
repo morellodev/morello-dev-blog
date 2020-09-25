@@ -1,5 +1,7 @@
-.markdown {
-  @apply text-lg leading-relaxed;
+@media (min-width: 768px) {
+  .markdown {
+    @apply text-lg leading-relaxed;
+  }
 }
 
 .markdown p,
@@ -31,4 +33,9 @@
 
 .markdown ul {
   @apply list-inside list-square;
+}
+
+.markdown code,
+.markdown pre {
+  word-break: break-word;
 }
