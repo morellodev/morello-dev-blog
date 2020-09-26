@@ -20,7 +20,7 @@ export default function PostPreview({
           responsiveImage={coverImage.responsiveImage}
         />
       </div>
-      <h3 className="mb-3 text-2xl font-semibold leading-snug md:text-3xl">
+      <h3 className="mb-3 text-2xl font-semibold leading-tight md:text-3xl">
         <Link href={`/posts/${slug}`}>
           <a className="hover:underline">{title}</a>
         </Link>
@@ -28,7 +28,7 @@ export default function PostPreview({
       <div className="mb-4 text-lg">
         <Date dateString={date} />
       </div>
-      <p className="text-lg leading-relaxed">{excerpt}</p>
+      <p className="text-lg">{excerpt}</p>
     </div>
   );
 }

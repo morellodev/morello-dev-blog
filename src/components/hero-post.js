@@ -15,7 +15,7 @@ export default function HeroPost({ title, coverImage, date, slug, excerpt }) {
         />
       </div>
       <div className="mb-20 md:mb-24">
-        <h3 className="mb-4 text-4xl leading-10 md:leading-tight lg:text-6xl">
+        <h3 className="mb-4 text-4xl font-bold leading-tight lg:text-6xl">
           <Link href={`/posts/${slug}`}>
             <a className="hover:underline">{title}</a>
           </Link>
@@ -23,7 +23,7 @@ export default function HeroPost({ title, coverImage, date, slug, excerpt }) {
         <div className="mb-4 text-lg">
           <Date dateString={date} />
         </div>
-        <p className="text-lg leading-tight md:text-xl">{excerpt}</p>
+        <p className="text-lg md:text-xl">{excerpt}</p>
       </div>
     </section>
   );

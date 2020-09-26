@@ -1,6 +1,6 @@
 @media (min-width: 768px) {
   .markdown {
-    @apply text-lg leading-relaxed;
+    @apply text-lg;
   }
 }
 
@@ -16,11 +16,11 @@
 }
 
 .markdown h2 {
-  @apply mt-12 mb-4 text-3xl leading-snug;
+  @apply mt-12 mb-4 text-3xl;
 }
 
 .markdown h3 {
-  @apply mt-8 mb-4 text-2xl leading-snug;
+  @apply mt-8 mb-4 text-2xl;
 }
 
 .markdown p a {
@@ -33,9 +33,4 @@
 
 .markdown ul {
   @apply list-inside list-square;
-}
-
-.markdown code,
-.markdown pre {
-  word-break: break-word;
 }

@@ -15,11 +15,11 @@ export default function PostBody({ content }) {
           border-radius: 0.3em;
           margin: 0.5em 0;
           overflow: auto;
+          background: #2d2d2d;
         }
 
         div :global(.remark-highlight pre[class*="language-"]) {
           margin: 0;
-          overflow: initial;
           float: left;
           min-width: 100%;
         }
@@ -36,6 +36,13 @@ export default function PostBody({ content }) {
 
         div :global(.remark-highlight pre[class*="language-"].line-numbers) {
           padding-left: 2.8em;
+        }
+
+        @media (max-width: 639px) {
+          div :global(.remark-highlight) {
+            margin: 0 -1.25rem;
+            border-radius: 0;
+          }
         }
       `}</style>
     </div>
