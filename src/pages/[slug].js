@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { ArticleJsonLd } from "next-seo";
 
 // Components
 import Container from "@/components/container";
@@ -18,38 +19,59 @@ import markdownToHtml from "@/lib/md-to-html";
 export default function Post({ post, morePosts }) {
   const router = useRouter();
 
-  return (
-    <Layout>
-      <Container>
-        <Header />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
-              <Head>
-                <title>{post.title} | Dennis Morello</title>
-                {post.meta
-                  .filter((meta) => meta.tag === "meta")
-                  .map((meta, index) => (
-                    <meta key={index} {...meta.attributes} />
-                  ))}
-              </Head>
+  const getPostDescription = () => {
+    const metaDescription = post.meta.find(
+      ({ attributes }) => attributes?.name === "description"
+    );
 
-              <PostHeader
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.publicationDate}
-                author={post.author}
-              />
-              <PostBody content={post.content} />
-            </article>
-            <SectionSeparator />
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-          </>
-        )}
-      </Container>
-    </Layout>
+    return metaDescription?.attributes.content;
+  };
+
+  return (
+    <>
+      <ArticleJsonLd
+        title={post.title}
+        images={[post.coverImage.responsiveImage.src]}
+        datePublished={post.publicationDate}
+        authorName={post.author.name}
+        publisherName={post.author.name}
+        publisherLogo={post.author.avatar.url}
+        description={getPostDescription()}
+        url={`https://blog.morello.dev/${post.slug}`}
+      />
+
+      <Layout>
+        <Container>
+          <Header />
+          {router.isFallback ? (
+            <PostTitle>Loading…</PostTitle>
+          ) : (
+            <>
+              <article>
+                <Head>
+                  <title>{post.title} | Dennis Morello</title>
+                  {post.meta
+                    .filter((meta) => meta.tag === "meta")
+                    .map((meta, index) => (
+                      <meta key={index} {...meta.attributes} />
+                    ))}
+                </Head>
+
+                <PostHeader
+                  title={post.title}
+                  coverImage={post.coverImage}
+                  date={post.publicationDate}
+                  author={post.author}
+                />
+                <PostBody content={post.content} />
+              </article>
+              <SectionSeparator />
+              {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+            </>
+          )}
+        </Container>
+      </Layout>
+    </>
   );
 }
 

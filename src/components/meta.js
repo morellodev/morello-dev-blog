@@ -39,10 +39,6 @@ export default function Meta() {
         sizes="512x512"
         href="/icons/icon-512x512.png"
       />
-      <meta
-        name="description"
-        content="Notes about JavaScript, ReactJS and more about front-end development by Dennis Morello."
-      />
     </Head>
   );
 }
