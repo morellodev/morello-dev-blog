@@ -29,16 +29,18 @@ export default function Post({ post, morePosts }) {
 
   return (
     <>
-      <ArticleJsonLd
-        title={post.title}
-        images={[post.coverImage.responsiveImage.src]}
-        datePublished={post.publicationDate}
-        authorName={post.author.name}
-        publisherName={post.author.name}
-        publisherLogo={post.author.avatar.url}
-        description={getPostDescription()}
-        url={`https://blog.morello.dev/${post.slug}`}
-      />
+      {post ? (
+        <ArticleJsonLd
+          title={post.title}
+          images={[post.coverImage.responsiveImage.src]}
+          datePublished={post.publicationDate}
+          authorName={post.author.name}
+          publisherName={post.author.name}
+          publisherLogo={post.author.avatar.url}
+          description={getPostDescription()}
+          url={`https://blog.morello.dev/${post.slug}`}
+        />
+      ) : null}
 
       <Layout>
         <Container>
