@@ -56,7 +56,7 @@ export async function getAllPostsForHomePage() {
         author {
           name
           avatar {
-            url(imgixParams: { fit: facearea, w: 100, h: 100 })
+            url(imgixParams: { fit: crop, w: 100, h: 100 })
           }
         }
       }
@@ -84,7 +84,7 @@ export async function getPostBySlugAndMorePosts(slug) {
         author {
           name
           avatar {
-            url(imgixParams: { fit: facearea, w: 100, h: 100 })
+            url(imgixParams: { fit: crop, w: 100, h: 100 })
           }
         }
         meta: _seoMetaTags {
@@ -110,7 +110,7 @@ export async function getPostBySlugAndMorePosts(slug) {
         author {
           name
           avatar {
-            url(imgixParams: { fit: facearea, w: 100, h: 100 })
+            url(imgixParams: { fit: crop, w: 100, h: 100 })
           }
         }
       }
@@ -128,7 +128,7 @@ export async function getAuthorBySlug(slug) {
       author(filter: { slug: { eq: $slug } }) {
         name
         avatar {
-          url(imgixParams: { fit: facearea, w: 200, h: 200 })
+          url(imgixParams: { fit: crop, w: 200, h: 200 })
         }
         bio
       }
